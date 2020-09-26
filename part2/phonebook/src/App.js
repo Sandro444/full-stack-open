@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"
+
 
 const PersonsList = ({persons}) => {
     return(
         <>
-        {persons.map((person) => {
+        {persons.length > 0? persons.map((person) => {
             return (
                 <li key={person.name}>
                     {" "}
                     {person.name} - {person.number}{" "}
                 </li>
             );
-        })}
+        }) : null}
         </>
     )
 }
@@ -69,12 +71,15 @@ const Filter = ({ persons, searchValue, searchChange }) => {
 };
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        { name: "Arto Hellas", number: 555999222 },
-    ]);
+    const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [searchValue, setSearchValue] = useState("");
+
+    useEffect(()=>{
+        axios.get('http://localhost:3001/persons')
+        .then(response=>setPersons(response.data))
+    },[])
 
     const searchChange = (e) => {
         setSearchValue(e.target.value);
