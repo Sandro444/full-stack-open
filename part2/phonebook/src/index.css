@@ -1,0 +1,8 @@
+.message{
+    display: block;
+    width: fit-content;
+    padding: 5px;
+    height: fit-content;
+    border: 1px solid grey;
+    color: red;
+}

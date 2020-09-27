@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"
 import personService from "./services";
 
+const Notification = ({message}) => {
+    return message == ""? "" : (
+        <div className="message">
+            {message}
+        </div>
+    )
+}
+
 const PersonsList = ({persons, handleDelete}) => {
     return(
         <>
@@ -24,6 +32,7 @@ const Form = ({addPerson, newName, nameChangeHandler, newNumber, numberChangeHan
                     <input
                         value={newName}
                         onChange={(e) => nameChangeHandler(e)}
+                        required
                     />
                     <div>
                         number:{" "}
@@ -31,6 +40,7 @@ const Form = ({addPerson, newName, nameChangeHandler, newNumber, numberChangeHan
                             type="number"
                             value={newNumber}
                             onChange={numberChangeHandler}
+                            required
                         />
                     </div>
                 </div>
@@ -74,6 +84,7 @@ const App = () => {
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [searchValue, setSearchValue] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(()=>{
         personService.getPersons()
@@ -90,7 +101,11 @@ const App = () => {
             personService.createPerson({
                 name: newName, number:newNumber
             })
-            .then(response=>setPersons(persons.concat(response)))
+            .then(response=> {
+                setPersons(persons.concat(response))
+                setMessage(`${newName} added to DB`)
+            })
+            
             setNewName("");
             setNewNumber("");
         } else {
@@ -119,7 +134,10 @@ const App = () => {
             personService.deletePerson(id)
             .then(response => {
                 personService.getPersons()
-                .then(data => setPersons(data))
+                .then(data => {
+                    setPersons(data)
+                    setMessage(`${person.name} deleted from DB`)
+                })
             })
         }
     }
@@ -131,6 +149,7 @@ const App = () => {
             <h3>Search</h3>
             <Filter persons={persons} searchValue={searchValue} searchChange={searchChange} />
             <h3>Add Person</h3>
+            <Notification message={message} />
             <Form addPerson={addPerson} newName={newName} newNumber={newNumber} nameChangeHandler={nameChangeHandler} numberChangeHandler={numberChangeHandler} />
             <h2>Numbers</h2>
             <PersonsList persons={persons} handleDelete={handleDelete} />
