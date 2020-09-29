@@ -30,32 +30,44 @@ app.get("/api/persons", (request, response) => {
 
 });
 
-/* app.get("/info", (request, response) => {
-    response.send(`Phonebook has info about ${persons.length} people
+app.get("/info", (request, response) => {
+    Person.find({}).then(data=>{
+        response.send(`Phonebook has info about ${data.length} people
     <br><br>
     ${new Date()}`);
+    })
+    
 });
 
 app.get("/api/persons/:id", (request, response) => {
     let id = request.params.id;
-    let person = persons.find((p) => p.id == id);
-    if (person) {
-        response.json(person);
+    Person.findById(id).then(single => {
+    if (single) {
+        response.json(single);
     } else {
         response.status(404).send("404 not found").end();
     }
+    })
+    
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-    let newPersons = persons.filter((p) => p.id != Number(request.params.id));
+app.delete("/api/persons/:id", (request, response, next) => {
 
-    if (_.isEqual(persons, newPersons)) {
-        response.send("id is not correct");
-    } else {
-        persons = newPersons;
-        response.status(204).send("data was deleted").end();
-    }
-}); */
+    Person.findByIdAndDelete(request.params.id).then(()=>{
+        response.status(204).send("deleted").end()
+    })
+    .catch(err=>next(err))
+
+});
+
+app.put("/api/persons/:id", (request, response, next) => {
+    let person = request.body;
+    Person.findByIdAndUpdate(request.params.id, person, {new:true})
+    .then(data=>{
+        response.json(data)
+    })
+    .catch(e=>next(e))
+})
 
 app.post("/api/persons", (request, response) => {
     let newPerson = request.body;
@@ -82,3 +94,7 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log("server running on port:",PORT)
 });
+
+
+
+
