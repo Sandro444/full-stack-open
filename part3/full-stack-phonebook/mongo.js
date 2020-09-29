@@ -12,7 +12,7 @@ if (process.argv.length < 3) {
 const password = process.argv[2];
 
 if (process.argv.length == 3) {
-    const url = `mongodb+srv://sandro:${password}@cluster-sandro.jw71b.mongodb.net/phone-app-db?retryWrites=true&w=majority`;
+    const url = `mongodb+srv://sandro:${password}@cluster-sandro.jw71b.mongodb.net/phone-app-db?retryWrites=true&w=majority`; 
 
     mongoose.connect(url, {
         useNewUrlParser: true,
