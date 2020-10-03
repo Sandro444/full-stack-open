@@ -92,6 +92,29 @@ test('blogs have required parameters', async () => {
 
 })
 
+test('blog with correct id is deleted', async () => {
+    const blog = await api.get('/api/blogs');
+    const id = blog.body[0].id;
+
+    api.delete(`/api/blogs/${id}`)
+    .expect(204)
+})
+
+test('blog with correct id is updated', async () => {
+    const blog = await api.get('/api/blogs');
+    const id = blog.body[0].id
+
+    const newBlog = {
+        title: "updated",
+        author: "updateman",
+        url: "none",
+        likes: 30
+    }
+
+    const data = await api.put(`/api/blogs/${id}`).send(newBlog).expect(201)
+
+    expect(data.body.title).toEqual("updated")
+})
 afterAll(() => {
   mongoose.connection.close()
 })
