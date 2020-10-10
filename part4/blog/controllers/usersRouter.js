@@ -4,7 +4,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt")
 
 usersRouter.get("/", async (request, response) => {
-    const allUser = await User.find({})
+    const allUser = await User.find({}).populate("blogs", {url:1, title: 1, author: 1})
     const filtered = [...allUser].map(user => {
         const newUser = { ...user._doc }
         delete newUser.password
