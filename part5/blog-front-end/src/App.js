@@ -20,6 +20,12 @@ const blogReducer = (state,action) => {
       status: action.payload
     }
   }
+  else if(action.type == "deleted"){
+    return {
+      ...state,
+      status: action.payload
+    }
+  }
 }
 const initialState = {
   status:"",

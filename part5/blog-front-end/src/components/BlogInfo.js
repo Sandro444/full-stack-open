@@ -17,11 +17,21 @@ export const BlogInfo = ({blog}) => {
         }
         
     }
+
+    const handleDelete = async (e) => {
+        try{
+            const data = await blogServices.deleteBlog(blog, state.token)
+            dispatch({type:"deleted", payload: "blog deleted successfully"})
+        } catch(e){
+            console.log(e)
+        }
+    }
     return (
         <>
         <p>Author: {blog.author}</p>
         <p>Likes: {blog.likes} <button onClick={handleLike}>like</button> </p>
         <p>Url: {blog.url} </p>
+        <button onClick={handleDelete} >delete</button>
         </>
     )
 }

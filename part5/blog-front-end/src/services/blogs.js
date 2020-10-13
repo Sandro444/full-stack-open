@@ -13,6 +13,13 @@ const login = (username, password) => {
   return request.then(response => response.data)
 }
 
+const deleteBlog = (blog, token) => {
+  const request = axios.delete(`${baseUrl}/blogs/${blog.id}`, {headers:{
+    "authorization": `Bearer ${token}`
+  }})
+  return request.then(response => response.data)
+}
+
 const updateBlog = (blog, token) => {
   const request = axios.put(`${baseUrl}/blogs/${blog.id}`, {
     author: blog.author,
@@ -30,4 +37,4 @@ const createBlog = (blog, token) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, login, createBlog, updateBlog}
+export default { getAll, login, createBlog, updateBlog, deleteBlog}
