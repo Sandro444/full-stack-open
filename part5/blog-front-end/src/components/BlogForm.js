@@ -1,9 +1,13 @@
-import React from "react"
+import React ,{useState} from "react"
 
-const BlogForm = ({handleBlogSubmit, title, author, url, setAuthor, setTitle, setUrl, setShowForm}) => {
+const BlogForm = ({handleBlogSubmit, setShowForm}) => {
+    const [title, setTitle] = useState("")
+    const [author, setAuthor] = useState("")
+    const [url, setUrl] = useState("")
+    
     return(<>
     <button onClick={(e) => setShowForm(false)}>cancel</button>
-            <form onSubmit={handleBlogSubmit}>
+            <form onSubmit={(e)=>handleBlogSubmit(e, {title,author,url})}>
                 <p>Title</p>
                 <input value={title} onChange={e => setTitle(e.target.value)} />
                 <p>Author</p>
