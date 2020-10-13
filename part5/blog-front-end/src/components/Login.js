@@ -8,6 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [user, setUser] = useState(undefined)
     const [message, setMessage] = useState("")
+    const [removed, setRemoved] = useState(false)
     const formSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -29,8 +30,8 @@ const Login = () => {
     }
 
     const logoutHandler = (e) => {
-        console.log("clicked")
         setUser(undefined)
+        setRemoved(true)
         localStorage.removeItem("loggedUser")
     }
 
@@ -39,7 +40,7 @@ const Login = () => {
         currentUser = _.isEqual(user, currentUser)? currentUser : JSON.parse(currentUser)
         return (
             currentUser == undefined ?
-            <>
+            <div>
             <h1 style={{color:"red"}}>{message? message:""}</h1>
             <h1>Log in</h1>
                 <form onSubmit={formSubmit}>
@@ -48,7 +49,7 @@ const Login = () => {
                     <p>password</p>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} />
                     <input type="submit" value="submit" />
-                </form> </>
+                </form> </div>
                 : <div><p> welcome user: {currentUser.username} <button onClick={logoutHandler}>logout</button> </p>
                     <CreateBlog user={currentUser} />
                 </div>
