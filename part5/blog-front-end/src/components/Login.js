@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import blogService from "../services/blogs";
 import _ from "underscore"
 import CreateBlog from "./CreateBlog"
+import { BlogContext } from "../App";
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -9,10 +10,13 @@ const Login = () => {
     const [user, setUser] = useState(undefined)
     const [message, setMessage] = useState("")
     const [removed, setRemoved] = useState(false)
+
+    const {state, dispatch} = useContext(BlogContext)
     const formSubmit = async (e) => {
         e.preventDefault()
         try {
             let loggedUser = await blogService.login(username, password)
+            dispatch({type: "set token", payload: loggedUser.token})
             window.localStorage.setItem("loggedUser", JSON.stringify(loggedUser))
             setUser({
                 username: loggedUser.username
