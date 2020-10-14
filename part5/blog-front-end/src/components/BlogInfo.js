@@ -3,9 +3,9 @@ import propTypes from "prop-types"
 import blogServices from "../services/blogs";
 
 import {BlogContext} from "../App"
-export const BlogInfo = ({blog}) => {
-
-    const {state, dispatch} = useContext(BlogContext)
+export const BlogInfo = ({blog, testLikeFunction}) => {
+    //dont't using context because of testing purposes
+    //const {state, dispatch} = useContext(BlogContext)
 
     const handleLike = async (e) => {
         try{
@@ -14,6 +14,8 @@ export const BlogInfo = ({blog}) => {
         }catch(e){
             console.log(e)
         }
+
+        
         
     }
 
@@ -27,7 +29,7 @@ export const BlogInfo = ({blog}) => {
     }
     return (
         <>
-        <p className="blog-likes">Likes: {blog.likes} <button onClick={handleLike}>like</button> </p>
+        <p className="blog-likes">Likes: {blog.likes} <button className="blog-like-button" onClick={testLikeFunction}>like</button> </p>
         <p className="blog-url">Url: {blog.url} </p>
         <button onClick={handleDelete} >delete</button>
         </>

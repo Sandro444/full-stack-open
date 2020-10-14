@@ -6,7 +6,7 @@ const Blog = ({ blog }) => {
 
     <h4 className="blog-title">{blog.title}</h4>
     <p className="blog-author"> {blog.author} </p>
-    <button onClick = {(e)=> setShowMore(!showMore)}> show {showMore == true? "less":"more"}</button>
+    <button className="blog-show-button" onClick = {(e)=> setShowMore(!showMore)}> show {showMore == true? "less":"more"}</button>
     {showMore == false? null:<BlogInfo blog={blog} />}
   </div>)}
 
