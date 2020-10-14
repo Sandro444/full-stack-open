@@ -4,7 +4,8 @@ const Blog = ({ blog }) => {
   const [showMore, setShowMore] = useState(false)
   return(<div style = {singleBlogStyle}>
 
-    <h4>{blog.title}</h4>
+    <h4 className="blog-title">{blog.title}</h4>
+    <p className="blog-author"> {blog.author} </p>
     <button onClick = {(e)=> setShowMore(!showMore)}> show {showMore == true? "less":"more"}</button>
     {showMore == false? null:<BlogInfo blog={blog} />}
   </div>)}

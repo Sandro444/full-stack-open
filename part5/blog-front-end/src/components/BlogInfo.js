@@ -27,9 +27,8 @@ export const BlogInfo = ({blog}) => {
     }
     return (
         <>
-        <p>Author: {blog.author}</p>
-        <p>Likes: {blog.likes} <button onClick={handleLike}>like</button> </p>
-        <p>Url: {blog.url} </p>
+        <p className="blog-likes">Likes: {blog.likes} <button onClick={handleLike}>like</button> </p>
+        <p className="blog-url">Url: {blog.url} </p>
         <button onClick={handleDelete} >delete</button>
         </>
     )
