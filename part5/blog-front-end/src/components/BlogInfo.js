@@ -1,6 +1,5 @@
 import React, { useContext } from "react"
-import { assign } from "underscore";
-
+import propTypes from "prop-types"
 import blogServices from "../services/blogs";
 
 import {BlogContext} from "../App"
@@ -34,4 +33,8 @@ export const BlogInfo = ({blog}) => {
         <button onClick={handleDelete} >delete</button>
         </>
     )
+}
+
+BlogInfo.propTypes = {
+    blog: propTypes.object.isRequired
 }
