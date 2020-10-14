@@ -7,13 +7,13 @@ const BlogForm = ({handleBlogSubmit, setShowForm}) => {
     
     return(<>
     <button onClick={(e) => setShowForm(false)}>cancel</button>
-            <form onSubmit={(e)=>handleBlogSubmit(e, {title,author,url})}>
+            <form className="create-form" onSubmit={(e)=>handleBlogSubmit(e, {title,author,url})}>
                 <p>Title</p>
-                <input value={title} onChange={e => setTitle(e.target.value)} />
+                <input className="blog-create-title" value={title} onChange={e => setTitle(e.target.value)} />
                 <p>Author</p>
-                <input value={author} onChange={e => setAuthor(e.target.value)} />
+                <input className="blog-create-author" value={author} onChange={e => setAuthor(e.target.value)} />
                 <p>Url</p>
-                <input value={url} onChange={e => setUrl(e.target.value)} /><br/>
+                <input className="blog-create-url" value={url} onChange={e => setUrl(e.target.value)} /><br/>
                 <input type="submit" value="submit" />
             </form>
             </>
