@@ -1,63 +1,15 @@
-import React from 'react';
+import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore , getState} from 'redux'
-import reducer from './reducer'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import App from './App'
+import reducer from './reducers/anecdoteReducer'
 
 const store = createStore(reducer)
 
-const App = () => {
-  const good = () => {
-    store.dispatch({
-      type: 'GOOD'
-    })
-  }
-
-  const neutral = () => {
-    store.dispatch({
-      type: 'NEUTRAL'
-    })
-  }
-
-  const bad = () => {
-    store.dispatch({
-      type: 'BAD'
-    })
-  }
-
-  const reset = () => {
-    store.dispatch({
-      type: 'ZERO'
-    })
-  }
-
-  const mostVotes = () => {
-    let state = store.getState()
-    const sort = Object.keys(store.getState()).sort((a,b) => {
-      return state[b] - state[a]
-    })
-    return (
-      <p>most votes - {sort[0]} : {state[sort[0]]} </p>
-    )
-  }
-  return (
-    <div>
-      <button onClick={good}>good</button>
-      <button onClick={neutral}>neutral</button>
-      <button onClick={bad}>bad</button>
-      <button onClick={reset}>reset stats</button>
-
-      <div>good {store.getState().good}</div>
-      <div>neutral {store.getState().neutral}</div>
-      <div>bad {store.getState().bad}</div>
-
-      <div>{mostVotes()} </div>
-    </div>
-  )
-}
-
-const renderApp = () => {
-  ReactDOM.render(<App />, document.getElementById('root'))
-}
-
-renderApp()
-store.subscribe(renderApp)
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
