@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { createStore } from 'redux'
+import { createStore , getState} from 'redux'
 import reducer from './reducer'
 
 const store = createStore(reducer)
@@ -12,15 +12,45 @@ const App = () => {
     })
   }
 
+  const neutral = () => {
+    store.dispatch({
+      type: 'NEUTRAL'
+    })
+  }
+
+  const bad = () => {
+    store.dispatch({
+      type: 'BAD'
+    })
+  }
+
+  const reset = () => {
+    store.dispatch({
+      type: 'ZERO'
+    })
+  }
+
+  const mostVotes = () => {
+    let state = store.getState()
+    const sort = Object.keys(store.getState()).sort((a,b) => {
+      return state[b] - state[a]
+    })
+    return (
+      <p>most votes - {sort[0]} : {state[sort[0]]} </p>
+    )
+  }
   return (
     <div>
-      <button onClick={good}>good</button> 
-      <button>neutral</button> 
-      <button>bad</button>
-      <button>reset stats</button>
+      <button onClick={good}>good</button>
+      <button onClick={neutral}>neutral</button>
+      <button onClick={bad}>bad</button>
+      <button onClick={reset}>reset stats</button>
+
       <div>good {store.getState().good}</div>
-      <div>neutral</div>
-      <div>bad</div>
+      <div>neutral {store.getState().neutral}</div>
+      <div>bad {store.getState().bad}</div>
+
+      <div>{mostVotes()} </div>
     </div>
   )
 }
