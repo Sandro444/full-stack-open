@@ -1,31 +1,12 @@
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+import Anecdote from "../components/Anecdote"
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
-
-export const createAnecdote = (content) => {
-  console.log(content)
+export const createAnecdote = (anecdote) => {
+  console.log(anecdote)
   return {
     type: "CREATE",
-    payload: {
-    content: content,
-    id: getId(),
-    votes: 0
-    }
+    payload: anecdote
   }
 }
 
@@ -36,28 +17,36 @@ export const voteAnecdote = (id) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+export const dispatchInitData = (data) => {
+  return {
+    type: "INIT_DATA",
+    data: data
+  }
 
-const anecdoteReducer = (state = initialState, action) => {
-  switch(action.type){
+
+}
+
+const anecdoteReducer = (state = [], action) => {
+  switch (action.type) {
     case "VOTE":
       let changedAnectodes = state.map(anectode => {
-        if(anectode.id == action.payload){
+        if (anectode.id == action.payload) {
           let targetAnecdote = anectode
           targetAnecdote.votes = anectode.votes + 1;
           return targetAnecdote
-        } else{
+        } else {
           return anectode
         }
       })
       return changedAnectodes
     case "CREATE":
       return [...state, action.payload]
+    case "INIT_DATA":
+      return action.data
     default:
       return state
   }
 
-  return state
 }
 
 export default anecdoteReducer
