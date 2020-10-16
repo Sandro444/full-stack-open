@@ -1,7 +1,6 @@
-import { createStore, combineReducers} from 'redux'
-import {useDispatch} from "react-redux"
-import {initializeData} from "./services/notes"
-import anecdoteReducer, {dispatchInitData} from './reducers/anecdoteReducer'
+import { createStore, combineReducers, applyMiddleware} from 'redux'
+import thunk from "redux-thunk"
+import anecdoteReducer from './reducers/anecdoteReducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import notificationReducer from "./reducers/notificationReducer"
 import filterReducer from './reducers/filterReducer'
@@ -10,7 +9,9 @@ const allReducer = combineReducers({
     notifications: notificationReducer,
     filter: filterReducer
 })
-const store = createStore(allReducer, composeWithDevTools())
+const store = createStore(allReducer, composeWithDevTools(
+    applyMiddleware(thunk)
+))
 
 
 

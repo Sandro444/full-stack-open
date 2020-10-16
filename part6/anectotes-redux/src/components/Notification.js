@@ -5,9 +5,9 @@ const Notification = () => {
   const dispatch = useDispatch()
   const notification = useSelector(state => state.notifications)
 
-  useEffect(()=> {
+  /* useEffect(()=> {
     if(notification !=="")setTimeout(()=>dispatch(removeNotification()), 5000)
-  }, [notification])
+  }, [notification]) */
   const style = {
     border: 'solid',
     padding: 10,

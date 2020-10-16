@@ -9,10 +9,8 @@ import { initializeData } from "./services/notes";
 const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-
-    initializeData().then(notes => dispatch(dispatchInitData(notes)))  
-     
-  },[])
+    dispatch(dispatchInitData())
+  },[dispatch])
   return (
     <div>
       <Notification />

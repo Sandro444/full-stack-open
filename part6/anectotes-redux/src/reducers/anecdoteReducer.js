@@ -1,39 +1,43 @@
-import Anecdote from "../components/Anecdote"
-
+import { initializeData , createNew, voteFor} from "../services/notes";
 const getId = () => (100000 * Math.random()).toFixed(0)
 
 export const createAnecdote = (anecdote) => {
-  console.log(anecdote)
-  return {
-    type: "CREATE",
-    payload: anecdote
+  return async dispatch => {
+    const newNote = await createNew(anecdote)
+    dispatch({
+      type: "CREATE",
+      payload: newNote
+    })
   }
 }
 
-export const voteAnecdote = (id) => {
-  return {
-    type: "VOTE",
-    payload: id
+export const voteAnecdote = (anecdote) => {
+  return async dispatch => {
+    const updated = await voteFor(anecdote)
+    dispatch({
+      type: "VOTE",
+      payload: updated
+    })
   }
+   
 }
 
-export const dispatchInitData = (data) => {
-  return {
-    type: "INIT_DATA",
-    data: data
+export const dispatchInitData = () => {
+  return async dispatch => {
+    const notes = await initializeData()
+    dispatch({
+      type: "INIT_DATA",
+      payload: notes
+    })
   }
-
-
 }
 
 const anecdoteReducer = (state = [], action) => {
   switch (action.type) {
     case "VOTE":
       let changedAnectodes = state.map(anectode => {
-        if (anectode.id == action.payload) {
-          let targetAnecdote = anectode
-          targetAnecdote.votes = anectode.votes + 1;
-          return targetAnecdote
+        if (anectode.id == action.payload.id) {
+          return action.payload
         } else {
           return anectode
         }
@@ -42,7 +46,7 @@ const anecdoteReducer = (state = [], action) => {
     case "CREATE":
       return [...state, action.payload]
     case "INIT_DATA":
-      return action.data
+      return action.payload
     default:
       return state
   }
