@@ -17,7 +17,19 @@ const asObject = (anecdote) => {
   }
 }
 
-export const voteAnectode = (id) => {
+export const createAnecdote = (content) => {
+  console.log(content)
+  return {
+    type: "CREATE",
+    payload: {
+    content: content,
+    id: getId(),
+    votes: 0
+    }
+  }
+}
+
+export const voteAnecdote = (id) => {
   return {
     type: "VOTE",
     payload: id
@@ -43,6 +55,8 @@ const reducer = (state = initialState, action) => {
       })
       console.log(changedAnectodes)
       return changedAnectodes
+    case "CREATE":
+      return [...state, action.payload]
     default:
       return state
   }

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { HexColorPicker } from "react-colorful";
 import "react-colorful/dist/index.css";
-import {voteAnectode} from "./reducers/anecdoteReducer"
+import {voteAnecdote, createAnecdote} from "./reducers/anecdoteReducer"
 
 
 const App = () => {
@@ -10,11 +10,22 @@ const App = () => {
   const dispatch = useDispatch()
 
   const vote = (id) => {
-    dispatch(voteAnectode(id))
+    dispatch(voteAnecdote(id))
   }
 
+  const create = (content) => {
+    dispatch(createAnecdote(content))
+  }
   return (
     <div>
+      <h2>create new</h2>
+      <form onSubmit = { (e) => {
+        e.preventDefault()
+        return create(e.target.content.value)
+      }}>
+        <div><input name="content" /></div>
+        <button>create</button>
+      </form>
       <h2>Anecdotes</h2>
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
@@ -27,11 +38,6 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2>create new</h2>
-      <form>
-        <div><input /></div>
-        <button>create</button>
-      </form>
     </div>
   )
 }
