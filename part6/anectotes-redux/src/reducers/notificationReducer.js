@@ -8,10 +8,13 @@ const notificationReducer = (state = "", action) => {
             return state
     }
 }
-
+let timeout;
 export const setNotification = (message, seconds) => {
     return dispatch => {
-    setTimeout(()=>dispatch(removeNotification()), seconds*1000)
+        if(timeout){
+            clearTimeout(timeout)
+        }
+    timeout = setTimeout(()=>dispatch(removeNotification()), seconds*1000)
     dispatch({
         type: "SET_NOTIFICATION",
         notification: message

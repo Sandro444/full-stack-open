@@ -1,9 +1,9 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, connect } from "react-redux";
 import {setFilter} from "../reducers/filterReducer"
-const Filter = () => {
-    const filterValue = useSelector(state => state.filter)
-    const allAnecdotes = useSelector(state => state.anecdotes)
+const Filter = (props) => {
+    const filterValue = props.filter
+    const allAnecdotes = props.anecdotes
     const dispatch = useDispatch()
     const filterAnecdotes = () => {
         if(filterValue !== ""){
@@ -17,11 +17,21 @@ const Filter = () => {
         }
     }
     return <div>
-        filter <input value={filterValue} onChange={e => dispatch(setFilter(e.target.value))}></input>
+        filter <input value={filterValue} onChange={e =>props.setFilter(e.target.value)}></input>
         <div>
             {filterAnecdotes()}
         </div>
     </div>
 }
 
-export default Filter
+const mapStateToProps = (state) => {
+    return {
+        filter: state.filter,
+        anecdotes: state.anecdotes
+    }
+}
+
+const mapDispatchToProps = {
+    setFilter
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Filter)
