@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+
+//axios.get(`https://restcountries.eu/rest/v2/name/${name}`)
 const useField = (type) => {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState("")
 
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
+  const onChange = (e) => setValue(e.target.value)
 
-  return {
-    type,
-    value,
-    onChange
-  }
+  return { value, type, onChange }
 }
 
-const useCountry = (name) => {
-  const [country, setCountry] = useState(null)
+const useCountry = () => {
 
-  useEffect()
+  const search = async (name) => {
+    const response = await axios.get(`https://restcountries.eu/rest/v2/name/${name}`)
+    return response.data
+  }
 
-  return country
+  return { search }
 }
 
 const Country = ({ country }) => {
@@ -28,7 +26,7 @@ const Country = ({ country }) => {
     return null
   }
 
-  if (!country.found) {
+  if (!country) {
     return (
       <div>
         not found...
@@ -38,32 +36,34 @@ const Country = ({ country }) => {
 
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
+      <h3>{country.name} </h3>
+      <div>capital {country.capital} </div>
+      <div>population {country.population}</div>
+      <img src={country.flag} height='100' alt={`flag of ${country.name}`} />
     </div>
   )
 }
 
 const App = () => {
-  const nameInput = useField('text')
-  const [name, setName] = useState('')
-  const country = useCountry(name)
+  const countryName = useField("text")
+  const country = useCountry()
+  const [list, setList] = useState([])
 
-  const fetch = (e) => {
+  const fetch = async (e) => {
     e.preventDefault()
-    setName(nameInput.value)
+    let data = await country.search(countryName.value)
+    setList(data)
   }
 
   return (
     <div>
-      <form onSubmit={fetch}>
-        <input {...nameInput} />
-        <button>find</button>
+      <form>
+        <input {...countryName} />
+        <button onClick={fetch}>search</button>
       </form>
-
-      <Country country={country} />
+      {list.map((item, i) => {
+        return <Country key={i} country={item} />
+      })}
     </div>
   )
 }
