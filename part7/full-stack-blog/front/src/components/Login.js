@@ -39,6 +39,7 @@ const Login = () => {
         setUser(undefined)
         setRemoved(true)
         localStorage.removeItem("loggedUser")
+        dispatch({type:"set token",payload:"none"})
     }
 
     const renderLogin = () => {
@@ -46,7 +47,7 @@ const Login = () => {
         currentUser = _.isEqual(user, currentUser)? currentUser : JSON.parse(currentUser)
         return (
             currentUser == undefined ?
-            <div>
+            <div style={loginStyle}>
             <h1 style={{color:"red"}}>{message? message:""}</h1>
             <h1>Log in</h1>
                 <form onSubmit={formSubmit}>
@@ -56,7 +57,7 @@ const Login = () => {
                     <input value={password} onChange={(e) => setPassword(e.target.value)} />
                     <input type="submit" value="submit" />
                 </form> </div>
-                : <div><p> welcome user: {currentUser.username} <button onClick={logoutHandler}>logout</button> </p>
+                : <div style={loginStyle}><p> welcome user: {currentUser.username} <button onClick={logoutHandler}>logout</button> </p>
                     <CreateBlog user={currentUser} />
                 </div>
         )
@@ -65,6 +66,13 @@ const Login = () => {
     return (
         renderLogin()
     )
+}
+
+const loginStyle = {
+    backgroundColor: "grey",
+    display: "block",
+    color: "white",
+    padding: 10
 }
 
 export default Login

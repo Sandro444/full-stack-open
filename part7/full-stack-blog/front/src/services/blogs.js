@@ -2,21 +2,25 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3001/api'
 
 const getAll = (token) => {
-  const request = axios.get(`${baseUrl}/blogs`, {headers:{
-    "Authorization":`Bearer ${token}`
-  }})
+  const request = axios.get(`${baseUrl}/blogs`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
   return request.then(response => response.data)
 }
 
 const login = (username, password) => {
-  const request = axios.post(`${baseUrl}/login`, {username,password})
+  const request = axios.post(`${baseUrl}/login`, { username, password })
   return request.then(response => response.data)
 }
 
 const deleteBlog = (blog, token) => {
-  const request = axios.delete(`${baseUrl}/blogs/${blog.id}`, {headers:{
-    "authorization": `Bearer ${token}`
-  }})
+  const request = axios.delete(`${baseUrl}/blogs/${blog.id}`, {
+    headers: {
+      "authorization": `Bearer ${token}`
+    }
+  })
   return request.then(response => response.data)
 }
 
@@ -28,13 +32,22 @@ const updateBlog = (blog, token) => {
     url: blog.url,
     user: blog.user["id"]
   },
-  {headers:{"authorization" : `Bearer ${token}`}})
-  return request.then(response=>response.data)
-}
-
-const createBlog = (blog, token) => {
-  const request = axios.post(`${baseUrl}/blogs`, blog, {headers:{"authorization" : `Bearer ${token}`}})
+    { headers: { "authorization": `Bearer ${token}` } })
   return request.then(response => response.data)
 }
 
-export default { getAll, login, createBlog, updateBlog, deleteBlog}
+const createComment = (blogId, token, content) => {
+  const request = axios.post(`${baseUrl}/blogs/${blogId}/comments`, { content }, {
+    headers: {
+      "authorization": `Bearer ${token}`
+    }
+  })
+  return request.then(response => { return { status: response.status, data: response.data } })
+}
+
+const createBlog = (blog, token) => {
+  const request = axios.post(`${baseUrl}/blogs`, blog, { headers: { "authorization": `Bearer ${token}` } })
+  return request.then(response => response.data)
+}
+
+export default { getAll, login, createBlog, updateBlog, deleteBlog, createComment }

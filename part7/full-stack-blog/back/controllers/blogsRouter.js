@@ -31,7 +31,8 @@ blogsRouter.post("/", async (request, response) => {
             url: body.url,
             author: body.author,
             likes: body.likes? body.likes : 0,
-            user: user._id
+            user: /* user._id? user._id: */user.id,
+            comments: []
         })
         const data = await blog.save()
         const blogId = data._id
@@ -55,6 +56,33 @@ blogsRouter.put("/:id", async (request, response, next) => {
         response.status(400).end()
     }
 });
+
+blogsRouter.post("/:id/comments", async (request, response, next) => {
+    const comment = request.body
+    const targetBlog = await Blog.findById(request.params.id)
+    /* const data = await Blog.findByIdAndUpdate(comment.id, {
+
+    }) */
+    let allComments = [...targetBlog.comments]
+    allComments.push({content:comment.content})
+    console.log(allComments)
+    const blogWithComment = {
+        likes: targetBlog.likes,
+        title: targetBlog.title,
+        url: targetBlog.url,
+        author: targetBlog.author,
+        comments: allComments,
+        user: targetBlog.user
+    }
+    const updatedBlog = await Blog.findByIdAndUpdate(targetBlog._id, blogWithComment, {new:true})
+    try{
+        console.log(updatedBlog)
+        response.status(201).json(updatedBlog)
+    } catch(e){
+        console.log(e)
+    }
+
+})
 
 blogsRouter.delete("/:id", async (request, response, next) => {
     console.log("here:delete")

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import blogServices from "../services/blogs";
 import userServices from "../services/users"
+import {Comments} from "./Comments"
+import {CommentForm} from "./CommentFrom"
 import { useSelector, useDispatch } from "react-redux"
 const Blog = ({ blog }) => {
-  
 
   const state = useSelector(state => state.blogs)
   const dispatch = useDispatch()
@@ -32,11 +33,14 @@ const Blog = ({ blog }) => {
   if(!blog) return null
   return (<div style={singleBlogStyle}>
 
-    <h4 className="blog-title">{blog.title }</h4>
+    <h2 className="blog-title">{blog.title }</h2>
     <p className="blog-author"> {blog.author} </p>
     <p className="blog-likes">Likes: {blog.likes} <button className="blog-like-button" onClick={handleLike}>like</button> </p>
     <p className="blog-url">Url: {blog.url} </p>
     <button onClick={handleDelete} >delete</button>
+
+    <Comments comments={blog.comments} />
+    <CommentForm id={blog.id} />
   </div>)
 }
 
@@ -45,8 +49,6 @@ const singleBlogStyle = {
   marginTop:20,
   paddingTop: 10,
   paddingLeft: 2,
-  border: 'solid',
-  borderWidth: 1,
   marginBottom: 5
 }
 export default Blog

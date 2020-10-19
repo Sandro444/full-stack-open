@@ -1,12 +1,10 @@
 import React from "react"
-import { Link, Switch, Route, useRouteMatch } from "react-router-dom";
-import User from "./User"
+import { Link} from "react-router-dom";
 const Users = ({users}) => {
-    console.log(users)
     return (
         <div>
             <h1>
-                users
+                All Users
             </h1>
             <ul>
                 {users.map(user=>{

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const config = require("../utils/config")
 
+const commentSchema = new mongoose.Schema({
+  content: String
+})
 
 const blogSchema = new mongoose.Schema({
   title: {type:String, required:true},
@@ -11,8 +14,10 @@ const blogSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  comments: [commentSchema]
 })
+
 blogSchema.set("toJSON", {
   transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString();
