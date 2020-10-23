@@ -1,3 +1,7 @@
+interface Input {
+    params: Array<number>
+}
+
 interface Output {
     periodLength: number,
     trainingDays: number,
@@ -7,6 +11,21 @@ interface Output {
     target: number,
     average: number
 };
+
+const parseInput = (args : Array<string>) : Input => {
+    let numsArray = [];
+    for(let i:number = 2; i< args.length; i++){
+        if(!isNaN(Number(args[i]))){
+            numsArray.push(Number(args[i]));
+        } else {
+            console.log("nan",args[i])
+            throw new Error("arguments must be all numbers");
+        }
+    }
+    return {
+        params: numsArray
+    }
+}
 
 const trainingCalculator = (days: Array<number>) : Output => {
     let periodLength = days.length;
@@ -36,5 +55,11 @@ const trainingCalculator = (days: Array<number>) : Output => {
         average
     }
 }
-let res = trainingCalculator([1,1,0,3,4.4,3,3]);
-console.log(res)
+try{
+    const {params} = parseInput(process.argv);
+    let res = trainingCalculator(params);
+    
+    console.log(res)
+} catch(e){
+    console.log("message:", e.message)
+}

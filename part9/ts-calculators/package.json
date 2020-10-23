@@ -6,8 +6,12 @@
   "scripts": {
     "ts-node": "ts-node",
     "bmicalculator": "ts-node -- bmicalculator.ts",
+    "trainingcalculator": "ts-node -- trainingcalculator.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^14.14.2"
+  }
 }
