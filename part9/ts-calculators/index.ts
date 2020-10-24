@@ -1,11 +1,21 @@
 import express from 'express';
 import BMICalculator from "./bmicalc";
+import trainingCalc from "./trainingcalc";
 const app = express();
 
 app.get('/hello', (_req , res) => {
   res.send('Hello full stack!');
 });
 
+app.use(express.json());
+
+
+app.post("/exercises", (req,res) => {
+    console.log("here");
+    const data = req.body.exercises;
+    const answer = trainingCalc(data);
+    res.json(answer);
+})
 
 app.get("/bmi", (req,res) => {
     let weight: number = Number(req.query.weight);
@@ -18,8 +28,6 @@ app.get("/bmi", (req,res) => {
             status
         })
     }else{
-        console.log(req.params.weight)
-        console.log(req)
         res.send("invalid arguments")
     }
 })
